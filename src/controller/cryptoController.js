@@ -2,7 +2,8 @@ const axios = require("axios");
 const url = "http://api.coincap.io/v2/assets";
 
 
-const getAssets = async () => {
+const getAssets = async (req,res) => {
+  try{
   const response = await axios.get(url);
   return response.data.data
     .sort((c1, c2) => {
@@ -14,6 +15,10 @@ const getAssets = async () => {
       const { priceUsd, symbol, name, marketCapUsd } = c;
       return { priceUsd, symbol, name, marketCapUsd };
     });
+  }
+  catch(err){
+    return res.status(500).send({message: err.message})
+  }
 };
  
 module.exports = {getAssets}
